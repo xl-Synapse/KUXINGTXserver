@@ -51,7 +51,7 @@ def registerPost(request):
 
 def resetPassword(request):
     result = {
-        'isResetSuccess': False
+            'isResetSuccess': False
     }
     if request.method == 'POST':
         ouserName = request.POST['ouserName']
@@ -77,4 +77,7 @@ def resetPassword(request):
       相关api、
 
 '''
+
+
+
 

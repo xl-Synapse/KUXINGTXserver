@@ -16,7 +16,6 @@ class customer(models.Model):
         treasure：用户财富
     """
 
-    object = models.Manager
     id = models.AutoField("id", primary_key=True)
     name = models.CharField("姓名", max_length=12, null=False)
     password = models.CharField("密码", max_length=12, null=False)
@@ -37,7 +36,6 @@ class notes(models.Model):
         article: 记事内容
 
     """
-    object = models.Manager
     id = models.AutoField("id", primary_key=True)
     uid = models.ForeignKey(to="customer", to_field="id", on_delete='CASCADE')
     date = models.DateTimeField("日期", auto_now_add=True)
@@ -55,8 +53,25 @@ class trends(models.Model):
         date: 动态产生日期
         article: 动态内容
     """
-    object = models.Manager
     id = models.AutoField("id", primary_key=True)
     uid = models.ForeignKey(to="customer", to_field="id", on_delete='CASCADE')
     date = models.DateTimeField("日期", auto_now_add=True)
     article = models.TextField("内容", null=False)
+
+
+class relation(models.Model):
+    """ relation类
+    information：
+        关联映射 server_relation表格
+    attributes：
+        id: 表格主键
+        uid: 用户id
+        fid: 好友id
+        nick_name: 昵称
+        discription: 描述
+    """
+    id = models.AutoField("id", primary_key=True)
+    uid = models.ForeignKey(to='customer', to_field='id', related_name='uid', on_delete='CASCADE', primary_key=False)
+    fid = models.ForeignKey(to='customer', to_field='id', related_name='fid', on_delete='CASCADE', primary_key=False)
+    nick_name = models.CharField("昵称", max_length=12, null=False)
+    discription = models.CharField("描述", max_length=24, null=True)

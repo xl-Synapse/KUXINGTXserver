@@ -13,7 +13,7 @@ def sign_up(name, password, records, treasure):
     :return: true   false
     """
     # user = cust   omer(name='wo', password='ni', records=0, treasure=0)
-    users = customer.object.filter(name=name, password=password)
+    users = customer.objects.filter(name=name, password=password)
     if users:
         user = customer(name=name, password=name, records=records, treasure=treasure)
         user.save()
@@ -28,7 +28,7 @@ def sign_in(name, password):
     :param 用户信息：name、password
     :return: true   false
     """
-    user = customer.object.filter(name=name, password=password)
+    user = customer.objects.filter(name=name, password=password)
     if user:
         return True
     else:
@@ -42,7 +42,7 @@ def query_info(name, password):
     :param 用户信息：name、password
     :return: 用户信息的 json 字段
     """
-    user = customer.object.filter(name=name, password=password)
+    user = customer.objects.filter(name=name, password=password)
     if user:
         # user = list(user)
         # userinfo = json.dumps(user)
@@ -58,7 +58,7 @@ def modify_info(oname, opassword, nname, npassword):
     :param 原用户信息：name、password 新用户信息：name、password
     :return: true   false
     """
-    user = customer.object.get(name=oname, password=opassword)
+    user = customer.objects.get(name=oname, password=opassword)
     if user:
         user.name = nname
         user.password = npassword
@@ -88,7 +88,7 @@ def trends_my_one_quer(uid, date):
     :param uid: 用户id
     :return: 有动态 json 无动态 None
     """
-    my_one_trends = trends.object.filter(uid=uid, date=date)
+    my_one_trends = trends.objects.filter(uid=uid, date=date)
     if my_one_trends:
         my_one_trends = serializers.serialize("json", my_one_trends)
         return my_one_trends
@@ -102,7 +102,7 @@ def trends_my_all_quer(uid):
     :param uid: 用户id
     :return: 动态信息json / None
     """
-    my_all_trends = trends.object.filter(uid=uid)
+    my_all_trends = trends.objects.filter(uid=uid)
     if my_all_trends:
         my_all_trends = serializers.serialize("json", my_all_trends)
         return my_all_trends
@@ -128,8 +128,7 @@ def notes_my_add(uid, date, title, article):
     :param article:  记事内容
     :return: 执行结果：true   false
     """
-    notes_my_new = notes(uid=uid, date=date, title=title, article=article)
-    notes_my_new.save()
+    notes(uid=uid, date=date, title=title, article=article).save()
     return True
 
 
@@ -140,8 +139,8 @@ def notes_my_one_quer(uid, date):
     :param date: date
     :return: 记事内容json / None
     """
-    my_one_note = notes.object.filter(uid=uid, date=date)
-    if my_one_note:
+    my_one_note = notes.objects.filter(uid=uid, date=date)
+    if my_one_note.exists:
         my_one_note = serializers.serialize("json", my_one_note)
         return my_one_note
     else:
@@ -154,7 +153,7 @@ def onte_my_all_quer(uid):
     :param uid: 用户id
     :return: 所有记事 json / None
     """
-    my_all_notes = notes.object.filter(uid=uid)
+    my_all_notes = notes.objects.filter(uid=uid)
     if my_all_notes:
         my_all_notes = serializers.serialize("json", my_all_notes)
         return my_all_notes
@@ -169,7 +168,7 @@ def onte_my_one_del(uid, date):
     :param date: date
     :return: 执行结果 true  false
     """
-    notes.object.filter(uid=uid, date=date).delete()
+    notes.objects.filter(uid=uid, date=date).delete()
     return True
 
 
@@ -179,5 +178,58 @@ def note_my_all_del(uid):
     :param uid: 用户 id
     :return: 执行结果 true false
     """
-    notes.object.filter(uid=uid).delete()
+    notes.objects.filter(uid=uid).delete()
     return True
+
+
+def relation_add(uid, fid, nick_name, description):
+    """
+    添加好友关系
+    :param uid: 用户id
+    :param fid: 好友id
+    :param nick_name: 昵称
+    :param description: 描述
+    :return: true   false
+    """
+    relation(uid=uid, fid=fid, nick_name=nick_name, description=description).save()
+    return True
+
+
+def relation_del(uid, fid):
+    """
+    删除好友关系
+    :param uid: 用户id
+    :param fid: 好友id
+    :return: true    false
+    """
+    relation.objects.filter(uid=uid, fid=fid).delete()
+    return True
+
+
+def relation_my_all_qur(uid):
+    """
+    查询所有好友信息
+    :param uid: 用户id
+    :return: 好友关系json 包含内容查看 relation表列字段
+    """
+    my_relations = relation.objects.filter(uid=uid)
+    if my_relations.exists:
+        my_relations = serializers.serialize("json", my_relations)
+        return my_relations
+    else:
+        return False
+
+
+def relation_my_one_qur(uid, fid):
+    """
+    查找好友关系
+    :param uid: 用户id
+    :param fid: 好友id
+    :return:
+    """
+    my_relations = relation.objects.filter(uid=uid, fid=fid)
+    if my_relations.exists:
+        my_relations = serializers.serialize("json", my_relations)
+        return my_relations
+    else:
+        return None

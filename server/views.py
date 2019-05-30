@@ -1,7 +1,7 @@
 # coding=utf-8
 from django.http import JsonResponse
-from django.shortcuts import render
 from server.conn import *
+
 # Create your views here.
 '''
 
@@ -9,6 +9,8 @@ from server.conn import *
 
 '''
 '''                                                                               登录相关的未测试完成'''
+
+
 def loginPost(request):
     result = {
         'isLoginSuccess': False
@@ -21,14 +23,17 @@ def loginPost(request):
         这里需要接入数据库接口
         '''
 
-        if(sign_in(userName,password)==True):
+        if sign_in(userName, password):
             result['userName'] = userName
             result['password'] = password
             result['isLoginSuccess'] = True
             return JsonResponse(result)
     return JsonResponse(result)
 
+
 '''                                                                                       '''
+
+
 def registerPost(request):
     result = {
         'isRegisterSuccess': False
@@ -41,7 +46,7 @@ def registerPost(request):
         这里需要接入数据库接口
         '''
         '''注册账户 '''
-        if(sign_up(userName,password,0,0)==False):
+        if sign_up(userName, password, 0, 0):
             result['userName'] = userName
             result['password'] = password
             result['isRegisterSuccess'] = True
@@ -51,7 +56,7 @@ def registerPost(request):
 
 def resetPassword(request):
     result = {
-            'isResetSuccess': False
+        'isResetSuccess': False
     }
     if request.method == 'POST':
         ouserName = request.POST['ouserName']
@@ -63,13 +68,13 @@ def resetPassword(request):
         这里需要接入数据库接口
         '''
 
-        if (modify_info(ouserName,opassword,nuserName,npassword)==True):
-            result['nuserName'] = userName
-            result['npassword'] = password
+        if modify_info(ouserName, opassword, nuserName, npassword):
+            # 涛涛更改过变量
+            result['nuserName'] = nuserName
+            result['npassword'] = npassword
             result['isResetSuccess'] = True
             return JsonResponse(result)
     return JsonResponse(result)
-
 
 
 '''
@@ -77,7 +82,3 @@ def resetPassword(request):
       相关api、
 
 '''
-
-
-
-

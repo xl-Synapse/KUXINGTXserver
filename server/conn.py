@@ -258,7 +258,9 @@ def relation_del(uid, fid):
     :param fid: 好友id
     :return: true    false
     """
-    relation.objects.filter(uid=uid, fid=fid).delete()
+    me = find_customer(uid)
+    fr = find_customer(fid)
+    relation.objects.filter(uid=me, fid=fr).delete()
     return True
 
 
@@ -268,7 +270,8 @@ def relation_my_all_qur(uid):
     :param uid: 用户id
     :return: 好友关系json 包含内容查看 relation表列字段
     """
-    my_relations = relation.objects.filter(uid=uid)
+    me = find_customer(uid)
+    my_relations = relation.objects.filter(uid=me)
     if my_relations.exists:
         my_relations = serializers.serialize("json", my_relations)
         return my_relations
@@ -283,7 +286,9 @@ def relation_my_one_qur(uid, fid):
     :param fid: 好友id
     :return:
     """
-    my_relations = relation.objects.filter(uid=uid, fid=fid)
+    me = find_customer(uid)
+    fr = find_customer(fid)
+    my_relations = relation.objects.filter(uid=me, fid=fr)
     if my_relations.exists:
         my_relations = serializers.serialize("json", my_relations)
         return my_relations

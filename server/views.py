@@ -177,7 +177,7 @@ def relation_addPost(request):
         这里需要接入数据库接口
         '''
         user = relation_add(uid, fid, nick_name, description)
-        if user :
+        if user:
             result['uid'] = uid
             result['fid'] = fid
             result['nick_name'] = nick_name

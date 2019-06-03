@@ -19,4 +19,8 @@ from server import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', views.loginPost, name='loginPost'),
+    path('register/',views.registerPost,name='registerPost'),
+    path('query_info/',views.query_infoPost,name='query_info'),
+    path('modify_info/', views.modify_infoPost, name='modify_info'),
+    path('relation_add/', views.relation_addPost, name='relation_add'),
 ]

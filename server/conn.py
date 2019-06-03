@@ -15,11 +15,12 @@ def sign_up(name, password, records, treasure):
     # user = cust   omer(name='wo', password='ni', records=0, treasure=0)
     users = customer.objects.filter(name=name, password=password)
     if users:
-        user = customer(name=name, password=name, records=records, treasure=treasure)
+        return False
+    else:
+        user = customer(name=name, password=password, records=records, treasure=treasure)
         user.save()
         return True
-    else:
-        return False
+
 
 
 def sign_in(name, password):
@@ -58,7 +59,7 @@ def modify_info(oname, opassword, nname, npassword):
     :param 原用户信息：name、password 新用户信息：name、password
     :return: true   false
     """
-    user = customer.objects.get(name=oname, password=opassword)
+    user = customer.objects.filter(name=oname, password=opassword)
     if user:
         user.name = nname
         user.password = npassword

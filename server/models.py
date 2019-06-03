@@ -38,7 +38,7 @@ class notes(models.Model):
     """
     id = models.AutoField("id", primary_key=True)
     uid = models.ForeignKey(to="customer", to_field="id", on_delete='CASCADE')
-    date = models.DateTimeField("日期", auto_now_add=True)
+    date = models.DateTimeField("日期")
     title = models.CharField("标题", max_length=12, null=False)
     article = models.TextField("内容", null=False)
 
@@ -55,7 +55,7 @@ class trends(models.Model):
     """
     id = models.AutoField("id", primary_key=True)
     uid = models.ForeignKey(to="customer", to_field="id", on_delete='CASCADE')
-    date = models.DateTimeField("日期", auto_now_add=True)
+    date = models.DateTimeField("日期")
     article = models.TextField("内容", null=False)
 
 

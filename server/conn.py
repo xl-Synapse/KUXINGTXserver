@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import datetime
 
 from django.core import serializers
 
@@ -87,7 +88,7 @@ def trends_my_add(uid, date, article):
     """
     添加动态信息
     :param uid: 用户id
-    :param date: 产生日期
+    :param date: 产生日期  规定日期格式为（%Y-%m-%d %H:%M:%S）
     :param article: 动态内容
     :return: true   false
     """
@@ -100,7 +101,7 @@ def trends_my_add(uid, date, article):
 def trends_my_one_quer(uid, date):
     """
     查询返回一个动态
-    :param date: 查询日期
+    :param date: 查询日期  规定日期格式为（%Y-%m-%d %H:%M:%S）
     :param uid: 用户id
     :return: 有动态 json 无动态 None
     """
@@ -141,7 +142,7 @@ def notes_my_add(uid, date, title, article):
     """
     个人记事添加
     :param uid: 个人 id
-    :param date: 产生日期
+    :param date: 产生日期  规定产生日期为（%Y-%m-%d %H:%M:%S）
     :param title: 记事标题
     :param article:  记事内容
     :return: 执行结果：true   false
@@ -153,14 +154,14 @@ def notes_my_add(uid, date, title, article):
 
 def notes_my_one_quer(uid, date):
     """
-    返回记事信息
+    返回记事信息j
     :param uid: 用户id
-    :param date: date
+    :param date: date (规定日期格式为： %Y-%m-%d %H:%M:%S）
     :return: 记事内容json / None
     """
     me = find_customer(uid)
     my_one_note = notes.objects.filter(uid=me, date=date)
-    if my_one_note.exists:
+    if my_one_note:
         my_one_note = serializers.serialize("json", my_one_note)
         return my_one_note
     else:
@@ -186,7 +187,7 @@ def onte_my_one_del(uid, date):
     """
     删除一个记事
     :param uid: 用户id
-    :param date: date
+    :param date: date 规定日期格式为（%Y-%m-%d %H:%M:%S）
     :return: 执行结果 true  false
     """
     me = find_customer(uid)
@@ -281,7 +282,7 @@ def relation_my_all_qur(uid):
     """
     me = find_customer(uid)
     my_relations = relation.objects.filter(uid=me)
-    if my_relations.exists:
+    if my_relations:
         my_relations = serializers.serialize("json", my_relations)
         return my_relations
     else:
@@ -298,7 +299,7 @@ def relation_my_one_qur(uid, fid):
     me = find_customer(uid)
     fr = find_customer(fid)
     my_relations = relation.objects.filter(uid=me, fid=fr)
-    if my_relations.exists:
+    if my_relations:
         my_relations = serializers.serialize("json", my_relations)
         return my_relations
     else:

@@ -25,4 +25,5 @@ urlpatterns = [
     path('query_info/', views.query_infoPost, name='query_info'),
     path('modify_info/', views.modify_infoPost, name='modify_info'),
     path('relation_add/', views.relation_addPost, name='relation_add'),
+    path('relation_confirm/', views.relation_confirmPost, name='relation_confirm'),
 ]

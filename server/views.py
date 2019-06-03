@@ -170,11 +170,11 @@ def relation_addPost(request):
         'isRelation_addSuccess': False
     }
     if request.method == 'POST':
-        uid = request.POST['uid']
-        fid = request.POST['fid']
+        uid = int(request.POST['uid'])
+        fid = int(request.POST['fid'])
         nick_name = request.POST['nick_name']
         description = request.POST['description']
-        print("用户名:" + uid + " 添加好友")
+        print("用户名:" + str(uid) + " 添加好友")
         # 调用数据库的接口、
         '''
         这里需要接入数据库接口
@@ -186,12 +186,50 @@ def relation_addPost(request):
             result['nick_name'] = nick_name
             result['description'] = description
             print("返回信息:\n" +
-                  "ouserName " + ouserName + "\n" +
-                  "opassword " + opassword + "\n" +
-                  "nuserName " + nuserName + "\n" +
-                  "npassword " + npassword + "\n" +
+                  "uid " + str(uid) + "\n" +
+                  "fid " + str(fid) + "\n" +
+                  "nick_name " + nick_name + "\n" +
+                  "description " + description + "\n" +
                   "isRelation_addSuccess " + str(True) + "\n"
                   )
             result['isRelation_addSuccess'] = True
+            return JsonResponse(result)
+    return JsonResponse(result)
+
+
+def relation_confirmPost(request):
+    """
+    添加好友关系
+    :param: request
+    :return: true   false
+    """
+
+    result = {
+        'isRelation_confirmSuccess': False
+    }
+    if request.method == 'POST':
+        uid = int(request.POST['uid'])
+        fid = int(request.POST['fid'])
+        nick_name = request.POST['nick_name']
+        description = request.POST['description']
+        print("用户名:" + str(uid) + " 确认好友请求")
+        # 调用数据库的接口、
+        '''
+        这里需要接入数据库接口
+        '''
+        user = relation_confirm(uid, fid, nick_name, description)
+        if user:
+            result['uid'] = uid
+            result['fid'] = fid
+            result['nick_name'] = nick_name
+            result['description'] = description
+            print("返回信息:\n" +
+                  "uid " + str(uid) + "\n" +
+                  "fid " + str(fid) + "\n" +
+                  "nick_name " + nick_name + "\n" +
+                  "description " + description + "\n" +
+                  "isRelation_confirmSuccess " + str(True) + "\n"
+                  )
+            result['isRelation_confirmSuccess'] = True
             return JsonResponse(result)
     return JsonResponse(result)

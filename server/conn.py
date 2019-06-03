@@ -219,8 +219,8 @@ def relation_add(uid, fid, nick_name, description):
     if me and fr:
         me_ = relation.objects.filter(uid=me, fid=fr)
         fr_ = relation.objects.filter(uid=fr, fid=me)
-        if me_ and fr_:
-            relation(uid=me, fid=fr, mconfirm=1, fconfirm=1, nick_name=nick_name, description=description).save()
+        if me_.count()==0 and fr_.count()==0:
+            relation(uid=me, fid=fr, mconfirm=1, fconfirm=0, nick_name=nick_name, description=description).save()
             relation(uid=fr, fid=me, mconfirm=0, fconfirm=1).save()
             return True
         else:

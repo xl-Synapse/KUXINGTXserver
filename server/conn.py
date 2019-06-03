@@ -220,8 +220,8 @@ def relation_add(uid, fid, nick_name, description):
     if me and fr:
         me_ = relation.objects.filter(uid=me, fid=fr)
         fr_ = relation.objects.filter(uid=fr, fid=me)
-        if me_ and fr_:
-            relation(uid=me, fid=fr, mconfirm=1, fconfirm=1, nick_name=nick_name, description=description).save()
+        if not me_ and not fr_:
+            relation(uid=me, fid=fr, mconfirm=1, fconfirm=0, nick_name=nick_name, description=description).save()
             relation(uid=fr, fid=me, mconfirm=0, fconfirm=1).save()
             return True
         else:
@@ -247,12 +247,15 @@ def relation_confirm(uid, fid, nick_name, description):
         mrelation.mconfirm = 1
         frelation = relation.objects.filter(uid=fr, fid=me)
         if frelation:
-            mrelation.nick_name = nick_name
-            mrelation.description = description
-            frelation.fconfirm = 1
-            mrelation.save()
-            frelation.save()
-            return True
+            for m in mrelation:
+                m.fconfirm = 1
+                m.nick_name = nick_name
+                m.description = description
+                m.save()
+                for f in frelation:
+                    f.mconfirm = 1
+                    f.save()
+                    return True
         else:
             mrelation.mconfirm = 0
             return False

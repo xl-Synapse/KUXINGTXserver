@@ -26,4 +26,7 @@ urlpatterns = [
     path('modify_info/', views.modify_infoPost, name='modify_info'),
     path('relation_add/', views.relation_addPost, name='relation_add'),
     path('relation_confirm/', views.relation_confirmPost, name='relation_confirm'),
+    path('relation_del/', views.relation_delPost, name='relation_del'),
+    path('relation_my_all_qur/', views.relation_my_all_qurPost, name='relation_my_all_qur'),
+    path('relation_my_one_qur/', views.relation_my_one_qurPost, name='relation_my_one_qur'),
 ]

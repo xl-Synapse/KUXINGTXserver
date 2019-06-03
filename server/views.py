@@ -234,3 +234,111 @@ def relation_confirmPost(request):
             result['isRelation_confirmSuccess'] = True
             return JsonResponse(result)
     return JsonResponse(result)
+
+
+def relation_confirmPost(request):
+    """
+    添加好友关系
+    :param: request
+    :return: true   false
+    """
+
+    result = {
+        'isRelation_confirmSuccess': False
+    }
+    if request.method == 'POST':
+        uid = int(request.POST['uid'])
+        fid = int(request.POST['fid'])
+        nick_name = request.POST['nick_name']
+        description = request.POST['description']
+        print("用户名:" + str(uid) + " 确认好友请求")
+        # 调用数据库的接口、
+        '''
+        这里需要接入数据库接口
+        '''
+        user = relation_confirm(uid, fid, nick_name, description)
+        if user:
+            result['uid'] = uid
+            result['fid'] = fid
+            result['nick_name'] = nick_name
+            result['description'] = description
+            print("返回信息:\n" +
+                  "uid " + str(uid) + "\n" +
+                  "fid " + str(fid) + "\n" +
+                  "nick_name " + nick_name + "\n" +
+                  "description " + description + "\n" +
+                  "isRelation_confirmSuccess " + str(True) + "\n"
+                  )
+            result['isRelation_confirmSuccess'] = True
+            return JsonResponse(result)
+    return JsonResponse(result)
+
+def relation_delPost(request):
+    """
+    删除好友关系
+    :param: request
+    :return: true   false
+    """
+
+    result = {
+        'isRelation_delSuccess': False
+    }
+    if request.method == 'POST':
+        uid = int(request.POST['uid'])
+        fid = int(request.POST['fid'])
+        print("用户名:" + str(uid) + " 删除好友请求")
+        # 调用数据库的接口、
+        '''
+        这里需要接入数据库接口
+        '''
+        user = relation_del(uid, fid)
+        if user:
+            result['uid'] = uid
+            result['fid'] = fid
+            print("返回信息:\n" +
+                  "uid " + str(uid) + "\n" +
+                  "fid " + str(fid) + "\n" +
+                  "isRelation_delSuccess " + str(True) + "\n"
+                  )
+            result['isRelation_delSuccess'] = True
+            return JsonResponse(result)
+    return JsonResponse(result)
+
+
+def relation_my_all_qurPost(request):
+    """
+    我的所有请求
+    :param: request
+    :return: true   false
+    """
+
+    result = {
+        'isRelation_my_all_qurSuccess': False
+    }
+    if request.method == 'POST':
+        uid = int(request.POST['uid'])
+        print("用户名:" + str(uid) + " 查询所有好友请求")
+        # 调用数据库的接口、
+        '''
+        这里需要接入数据库接口
+        '''
+        user = relation_my_all_qur(uid)
+        if user:
+            result['uid'] = uid
+            resultContent=[]
+            preparedJson = json.loads(user)
+            for m in preparedJson:
+                resultContent.append(m["fields"])
+                print(m)
+            print("返回信息:\n" +
+                  "uid " + str(uid) + "\n" +
+                  "resultContent " + str(resultContent) + "\n" +
+                  "isRelation_my_all_qurSuccess " + str(True) + "\n"
+                  )
+            result['resultContent']=resultContent
+            result['isRelation_my_all_qurSuccess'] = True
+            return JsonResponse(result)
+    return JsonResponse(result)
+
+def relation_my_one_qurPost(request):
+    pass

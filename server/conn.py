@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import datetime
 
 from django.core import serializers
 
@@ -98,6 +97,28 @@ def trends_my_add(uid, date, article):
     return True
 
 
+def trends_my_one_del(uid, date):
+    """
+    删除指定动态
+    :param uid: 用户id
+    :param date: 产生日期  规定日期格式为（%Y-%m-%d %H:%M:%S）
+    :return: True  False
+    """
+    me = find_customer(uid)
+    trends.objects.filter(uid=me, date=date).delete()
+    return True
+
+
+def trends_my_all_del(uid):
+    """
+    删除所有动态
+    :param uid: 用户id
+    :return: True False
+    """
+    me = find_customer(uid)
+    trends.objects.filter(uid=me).delete()
+
+
 def trends_my_one_quer(uid, date):
     """
     查询返回一个动态
@@ -168,7 +189,7 @@ def notes_my_one_quer(uid, date):
         return None
 
 
-def onte_my_all_quer(uid):
+def notes_my_all_quer(uid):
     """
     返回所有记事信息
     :param uid: 用户id
@@ -183,7 +204,7 @@ def onte_my_all_quer(uid):
         return None
 
 
-def onte_my_one_del(uid, date):
+def note_my_one_del(uid, date):
     """
     删除一个记事
     :param uid: 用户id

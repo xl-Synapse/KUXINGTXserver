@@ -269,6 +269,7 @@ def relation_del(uid, fid):
     me = find_customer(uid)
     fr = find_customer(fid)
     relation.objects.filter(uid=me, fid=fr).delete()
+    relation.objects.filter(uid=fr, fid=me).delete()
     return True
 
 

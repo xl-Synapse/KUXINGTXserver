@@ -22,7 +22,6 @@ def sign_up(name, password, records, treasure):
         return True
 
 
-
 def sign_in(name, password):
     """
     登陆业务
@@ -48,6 +47,7 @@ def query_info(name, password):
         # user = list(user)
         # userinfo = json.dumps(user)
         userinfo = serializers.serialize("json", user)
+        print(userinfo)
         return userinfo
     else:
         return None
@@ -192,8 +192,34 @@ def relation_add(uid, fid, nick_name, description):
     :param description: 描述
     :return: true   false
     """
-    relation(uid=uid, fid=fid, nick_name=nick_name, description=description).save()
+    relation(uid=uid, fid=fid, nick_name=nick_name, mconfirm=1, fconfirm=0, description=description).save()
+    relation(uid=fid, fid=uid, mconfirm=0, fconfirm=1).save()
     return True
+
+
+def relation_confirm(uid, fid, nick_name, description):
+    """
+    朋友好友确认
+    :param uid: 用户 id
+    :param fid: 好友 fid
+    :param nick_name: 昵称
+    :param description: 描述
+    :return: true false
+    """
+    mrelation = relation.objects.filter(uid=uid, fid=fid)
+    if mrelation:
+        mrelation.mconfirm = 1
+        frelation = relation.objects.filter(uid=fid, fid=uid)
+        if frelation:
+            frelation.fconfirm = 1
+            mrelation.save()
+            frelation.save()
+            return True
+        else:
+            mrelation.mconfirm = 0
+            return False
+    else:
+        return False
 
 
 def relation_del(uid, fid):

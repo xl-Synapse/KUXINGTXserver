@@ -1,7 +1,10 @@
 # coding=utf-8
-from django.http import JsonResponse
-from server.conn import *
 import json
+
+from django.http import JsonResponse
+
+from server.conn import *
+
 # Create your views here.
 '''
 
@@ -53,7 +56,10 @@ def registerPost(request):
             return JsonResponse(result)
     return JsonResponse(result)
 
+
 '''尚未实现'''
+
+
 def resetPassword(request):
     result = {
         'isResetSuccess': False
@@ -91,21 +97,21 @@ def query_infoPost(request):
     if request.method == 'POST':
         userName = request.POST['userName']
         password = request.POST['password']
-        print("用户名:"+userName+" 检索用户信息")
+        print("用户名:" + userName + " 检索用户信息")
         # 调用数据库的接口、
         '''
         这里需要接入数据库接口
         '''
-        user = query_info(userName,password)
-        if user!=None:
-            preparedJson=json.loads(user)
-            preparedUser=preparedJson[0]["fields"]
+        user = query_info(userName, password)
+        if None != user:
+            preparedJson = json.loads(user)
+            preparedUser = preparedJson[0]["fields"]
             result['userName'] = preparedUser["name"]
             result['password'] = preparedUser["password"]
             result['records'] = preparedUser["records"]
             result['treasure'] = preparedUser["treasure"]
             print("返回信息:\n" +
-                  "userName " +  str(result['userName'])+"\n"+
+                  "userName " + str(result['userName']) + "\n" +
                   "password " + str(result['password']) + "\n" +
                   "records " + str(result['records']) + "\n" +
                   "treasure " + str(result['treasure']) + "\n"
@@ -136,13 +142,13 @@ def modify_infoPost(request):
         这里需要接入数据库接口
         '''
         user = modify_info(ouserName, opassword, nuserName, npassword)
-        if user :
+        if user:
             result['ouserName'] = ouserName
             result['opassword'] = opassword
             result['nuserName'] = nuserName
             result['npassword'] = npassword
             print("返回信息:\n" +
-                  "ouserName " + ouserName+ "\n"+
+                  "ouserName " + ouserName + "\n" +
                   "opassword " + opassword + "\n" +
                   "nuserName " + nuserName + "\n" +
                   "npassword " + npassword + "\n" +
@@ -156,10 +162,7 @@ def modify_infoPost(request):
 def relation_addPost(request):
     """
     添加好友关系
-    :param uid: 用户id
-    :param fid: 好友id
-    :param nick_name: 昵称
-    :param description: 描述
+    :param: request
     :return: true   false
     """
 
@@ -183,7 +186,7 @@ def relation_addPost(request):
             result['nick_name'] = nick_name
             result['description'] = description
             print("返回信息:\n" +
-                  "ouserName " + ouserName+ "\n"+
+                  "ouserName " + ouserName + "\n" +
                   "opassword " + opassword + "\n" +
                   "nuserName " + nuserName + "\n" +
                   "npassword " + npassword + "\n" +
@@ -192,4 +195,3 @@ def relation_addPost(request):
             result['isRelation_addSuccess'] = True
             return JsonResponse(result)
     return JsonResponse(result)
-

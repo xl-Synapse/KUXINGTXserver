@@ -73,5 +73,7 @@ class relation(models.Model):
     id = models.AutoField("id", primary_key=True)
     uid = models.ForeignKey(to='customer', to_field='id', related_name='uid', on_delete='CASCADE', primary_key=False)
     fid = models.ForeignKey(to='customer', to_field='id', related_name='fid', on_delete='CASCADE', primary_key=False)
+    mconfirm = models.IntegerField("m确认", max_length=2, null=0)
+    fconfifm = models.IntegerField("f确认", max_length=2, null=0)
     nick_name = models.CharField("昵称", max_length=12, null=False)
     discription = models.CharField("描述", max_length=24, null=True)

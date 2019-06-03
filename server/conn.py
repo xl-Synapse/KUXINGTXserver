@@ -91,7 +91,8 @@ def trends_my_add(uid, date, article):
     :param article: 动态内容
     :return: true   false
     """
-    mytrends = trends(uid=uid, date=date, article=article)
+    me = find_customer(uid)
+    mytrends = trends(uid=me, date=date, article=article)
     mytrends.save()
     return True
 
@@ -103,7 +104,8 @@ def trends_my_one_quer(uid, date):
     :param uid: 用户id
     :return: 有动态 json 无动态 None
     """
-    my_one_trends = trends.objects.filter(uid=uid, date=date)
+    me = find_customer(uid)
+    my_one_trends = trends.objects.filter(uid=me, date=date)
     if my_one_trends:
         my_one_trends = serializers.serialize("json", my_one_trends)
         return my_one_trends
@@ -117,7 +119,8 @@ def trends_my_all_quer(uid):
     :param uid: 用户id
     :return: 动态信息json / None
     """
-    my_all_trends = trends.objects.filter(uid=uid)
+    me = find_customer(uid)
+    my_all_trends = trends.objects.filter(uid=me)
     if my_all_trends:
         my_all_trends = serializers.serialize("json", my_all_trends)
         return my_all_trends
@@ -143,7 +146,8 @@ def notes_my_add(uid, date, title, article):
     :param article:  记事内容
     :return: 执行结果：true   false
     """
-    notes(uid=uid, date=date, title=title, article=article).save()
+    me = find_customer(uid)
+    notes(uid=me, date=date, title=title, article=article).save()
     return True
 
 
@@ -154,7 +158,8 @@ def notes_my_one_quer(uid, date):
     :param date: date
     :return: 记事内容json / None
     """
-    my_one_note = notes.objects.filter(uid=uid, date=date)
+    me = find_customer(uid)
+    my_one_note = notes.objects.filter(uid=me, date=date)
     if my_one_note.exists:
         my_one_note = serializers.serialize("json", my_one_note)
         return my_one_note
@@ -168,7 +173,8 @@ def onte_my_all_quer(uid):
     :param uid: 用户id
     :return: 所有记事 json / None
     """
-    my_all_notes = notes.objects.filter(uid=uid)
+    me = find_customer(uid)
+    my_all_notes = notes.objects.filter(uid=me)
     if my_all_notes:
         my_all_notes = serializers.serialize("json", my_all_notes)
         return my_all_notes
@@ -183,7 +189,8 @@ def onte_my_one_del(uid, date):
     :param date: date
     :return: 执行结果 true  false
     """
-    notes.objects.filter(uid=uid, date=date).delete()
+    me = find_customer(uid)
+    notes.objects.filter(uid=me, date=date).delete()
     return True
 
 
@@ -193,7 +200,8 @@ def note_my_all_del(uid):
     :param uid: 用户 id
     :return: 执行结果 true false
     """
-    notes.objects.filter(uid=uid).delete()
+    me = find_customer(uid)
+    notes.objects.filter(uid=me).delete()
     return True
 
 

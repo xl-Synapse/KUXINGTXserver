@@ -36,6 +36,20 @@ def sign_in(name, password):
         return False
 
 
+def find_customer(uid):
+    """
+    内部函数：查找返回customer对象
+    :param uid: 用户id
+    :return: customer None
+    """
+    mcustomer = customer.objects.filter(id=uid)
+    if mcustomer:
+        for m in mcustomer:
+            return m
+    else:
+        return None
+
+
 def query_info(name, password):
     """
     查询用户信息业务
@@ -192,9 +206,20 @@ def relation_add(uid, fid, nick_name, description):
     :param description: 描述
     :return: true   false
     """
-    relation(uid=uid, fid=fid, nick_name=nick_name, mconfirm=1, fconfirm=0, description=description).save()
-    relation(uid=fid, fid=uid, mconfirm=0, fconfirm=1).save()
-    return True
+    me = find_customer(uid)
+    fr = find_customer(fid)
+    if me and fr:
+        me_ = relation.objects.filter(uid=me, fid=fr)
+        fr_ = relation.objects.filter(uid=fr, fid=me)
+        if me_ and fr_:
+            relation(uid=me, fid=fr, mconfirm=1, fconfirm=1, nick_name=nick_name, description=description).save()
+            relation(uid=fr, fid=me, mconfirm=0, fconfirm=1).save()
+            return True
+        else:
+            # 表示关系已存在
+            return True
+    else:
+        return False
 
 
 def relation_confirm(uid, fid, nick_name, description):
@@ -206,11 +231,15 @@ def relation_confirm(uid, fid, nick_name, description):
     :param description: 描述
     :return: true false
     """
-    mrelation = relation.objects.filter(uid=uid, fid=fid)
+    me = find_customer(uid)
+    fr = find_customer(fid)
+    mrelation = relation.objects.filter(uid=me, fid=fr)
     if mrelation:
         mrelation.mconfirm = 1
-        frelation = relation.objects.filter(uid=fid, fid=uid)
+        frelation = relation.objects.filter(uid=fr, fid=me)
         if frelation:
+            mrelation.nick_name = nick_name
+            mrelation.description = description
             frelation.fconfirm = 1
             mrelation.save()
             frelation.save()

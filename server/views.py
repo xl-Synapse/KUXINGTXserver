@@ -128,7 +128,6 @@ def modify_infoPost(request):
     :param 原用户信息：name、password 新用户信息：name、password
     :return: true   false
     """
-    relation_add(3, 7, "ni", "wo")
     result = {
         'isModify_infoSuccess': False
     }

@@ -29,4 +29,10 @@ urlpatterns = [
     path('relation_del/', views.relation_delPost, name='relation_del'),
     path('relation_my_all_qur/', views.relation_my_all_qurPost, name='relation_my_all_qur'),
     path('relation_my_one_qur/', views.relation_my_one_qurPost, name='relation_my_one_qur'),
+    path('trends_my_add/', views.trends_my_addPost, name='trends_my_add'),
+    path('trends_my_one_del/', views.trends_my_all_querPost, name='trends_my_one_del'),
+    path('trends_my_all_del/', views.trends_my_all_querPost, name='trends_my_all_del'),
+    path('trends_my_one_quer/', views.trends_my_all_querPost, name='trends_my_one_quer'),
+    path('trends_my_all_quer/', views.trends_my_all_querPost, name='trends_my_all_quer'),
+    path('trends_other_all_quer/', views.trends_other_all_querPost, name='trends_other_all_quer'),
 ]

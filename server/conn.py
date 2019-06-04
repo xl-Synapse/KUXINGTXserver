@@ -15,6 +15,7 @@ def sign_up(name, password, records, treasure):
     # user = cust   omer(name='wo', password='ni', records=0, treasure=0)
     users = customer.objects.filter(name=name, password=password)
     if users:
+
         return False
     else:
         user = customer(name=name, password=password, records=records, treasure=treasure)
@@ -30,7 +31,8 @@ def sign_in(name, password):
     """
     user = customer.objects.filter(name=name, password=password)
     if user:
-        return True
+        for m in user:
+            return m
     else:
         # 用户名或密码错误
         return False
@@ -96,6 +98,8 @@ def trends_my_add(uid, date, article):
     mytrends.save()
     return True
 
+def trends_change_content(trendsID,content):
+    trends.objects.filter(id = trendsID).update(article = content)
 
 def trends_my_one_del(uid, date):
     """
@@ -265,16 +269,18 @@ def relation_confirm(uid, fid, nick_name, description):
     fr = find_customer(fid)
     mrelation = relation.objects.filter(uid=me, fid=fr)
     if mrelation:
-        mrelation.mconfirm = 1
+        #mrelation.mconfirm = 1
         frelation = relation.objects.filter(uid=fr, fid=me)
         if frelation:
             for m in mrelation:
+                m.mconfirm = 1
                 m.fconfirm = 1
                 m.nick_name = nick_name
                 m.description = description
                 m.save()
                 for f in frelation:
                     f.mconfirm = 1
+                    f.fconfirm = 1
                     f.save()
                     return True
         else:
